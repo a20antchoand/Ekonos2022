@@ -8,7 +8,7 @@ public class Ekonos2022 {
 
 
     public static void main(String[] args) {
-    /*
+
         baralla = Carta.generarBaralla();
 
         for (Carta c : baralla) {
@@ -22,10 +22,8 @@ public class Ekonos2022 {
         for (Jugador j : jugadors) {
             mostrarMa(j.getId());
         }
-*/
-        System.out.println("HOLA");
-        System.out.println(taulell.caselles[0].veinas.get(0).getNumeroCasella());
-        System.out.println(taulell.caselles[0].veinas.get(1).getNumeroCasella());
+
+        System.out.println(taulell.toString());
 
     }
 

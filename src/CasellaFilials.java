@@ -5,11 +5,13 @@ public class CasellaFilials {
 
     int numeroCasella;
     boolean ocupada;
+    Empresa propietariFIlial;
     List<CasellaFilials> veinas = new ArrayList<>();
 
     public CasellaFilials(int numeroCasella) {
         this.numeroCasella = numeroCasella;
         this.ocupada = false;
+        this.propietariFIlial = null;
     }
 
     public int getNumeroCasella() {
