@@ -51,6 +51,7 @@ public class CasellaFilials {
         return "CasellaFilials{" +
                 "numeroCasella=" + numeroCasella +
                 ", ocupada=" + ocupada +
+                ", Propietari=" + propietariFIlial.nomEmpresa +
                 ", veinas=" + veinas +
                 '}';
     }

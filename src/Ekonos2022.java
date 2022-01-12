@@ -2,36 +2,52 @@ import java.util.*;
 
 public class Ekonos2022 {
 
-    static List<Carta> baralla = new ArrayList<>();
+    final static int RONDES = 3;
+
+    static Scanner s = new Scanner(System.in);
+
+    static Map<Integer, Carta> baralla = new LinkedHashMap<>();
     static LinkedList<Jugador> jugadors = new LinkedList<>();
     static TaulellAfilials taulell = new TaulellAfilials();
+    static Map<String, Empresa> empreses = new HashMap();
 
 
     public static void main(String[] args) {
 
-        baralla = Carta.generarBaralla();
+        iniciarPartida();
 
-        for (Carta c : baralla) {
-            System.out.println(c.toString() + "\n");
-        }
-
-        obtenirJugadors();
-
-        repartirMa(baralla);
-
-        for (Jugador j : jugadors) {
-            mostrarMa(j.getId());
-        }
-
-        System.out.println(taulell.toString());
+        jugar();
 
     }
 
+    public static void iniciarPartida() {
+        empreses = Empresa.afegirEmpreses();
+        obtenirJugadors();
+    }
+
+    public static void jugar() {
+        for (int i = 0; i < RONDES; i++) {
+
+            baralla = Carta.generarBaralla();
+            repartirMa(baralla);
+
+            System.out.println("\n\n RONDA " + i+1 + "\n\n");
+            while (jugadors.getLast().getMa().size() > 0) {
+                for (Jugador actual : jugadors) {
+                    actual.mostrarMa();
+                }
+            }
+        }
+    }
+
+    /*
+     * OBTENIR JUGADORS
+     *
+     */
 
     public static LinkedList<Jugador> obtenirJugadors() {
 
         for (int i = 1; i <= 6; i++) {
-            i--;
             jugadors.add(new Jugador(i));
 
         }
@@ -40,9 +56,12 @@ public class Ekonos2022 {
 
     }
 
+    /*
+     * CREAR TAULELL
+     *
+     */
 
-
-    private static void crearTaulell() {
+    private void crearTaulell() {
         while (taulell == null) {
 			jugadors = obtenirJugadors();
 
@@ -59,7 +78,7 @@ public class Ekonos2022 {
      *
      */
 
-    public static void repartirMa(List<Carta> baralla) {
+    public static void repartirMa(Map<Integer, Carta> baralla) {
 
         List<Carta> maActual;
 
@@ -67,10 +86,10 @@ public class Ekonos2022 {
 
             for (Jugador j : jugadors) {
                 maActual = new ArrayList<>();
-                for (int i = 0; i < 5; i++) {
+                for (int i = 0; i <= 5; i++) {
 
-                    maActual.add(baralla.get(baralla.size() - 1));
-                    baralla.remove(baralla.size() - 1);
+                    maActual.add(baralla.get(i));
+                    baralla.remove(baralla.get(i));
 
                 }
 
@@ -81,10 +100,10 @@ public class Ekonos2022 {
 
             for (Jugador j : jugadors) {
                 maActual = new ArrayList<>();
-                for (int i = 0; i < 6; i++) {
+                for (int i = 0; i <= 6; i++) {
 
-                    maActual.add(baralla.get(baralla.size() - 1));
-                    baralla.remove(baralla.size() - 1);
+                    maActual.add(baralla.get(i));
+                    baralla.remove(baralla.get(i));
 
                 }
 
@@ -96,29 +115,48 @@ public class Ekonos2022 {
     }
 
     /*
-     * MOSTRAR MA JUGADOR
-     *
-     */
+    *
+    * CREAR EMPRESA
+    *
+    * */
 
-    public static void mostrarMa(int idJugador) {
+    public static void crearFilial (Carta.opcions empresa) {
 
-        for (Jugador j : jugadors) {
+        int numCasella;
 
-            if (j.getId() == idJugador) {
+        do {
+            System.out.print("Indica el numero de casella: ");
+            numCasella = s.nextInt();
+        } while (numCasella < 1 && numCasella > 36);
 
-                System.out.println("\nCartes de: " + j.getId());
-
-                for (int i = 0; i < j.getMa().size(); i++) {
-
-                    System.out.println(j.getMa().get(i).toString());
-
-                }
-
-            }
-
+        if (taulell.comprovarCasella(numCasella)) {
+            System.out.println("Casella ocupada");
+        } else {
+            taulell.caselles[numCasella].propietariFIlial = empreses.get(empresa.toString());
+            taulell.caselles[numCasella].ocupada = true;
         }
 
     }
 
+    /*
+     *
+     * CREIXER EMPRESA
+     *
+     * */
+
+    public static void creixerEmpresa (Carta.opcions empresa) {
+        Empresa creixer = empreses.get(empresa.toString());
+
+        if (creixer.estatDesenvolupament == 4) {
+            creixer.estatDesenvolupament++;
+            //casella especial 1
+        } else if (creixer.estatDesenvolupament == 6) {
+            creixer.estatDesenvolupament++;
+            //casella especial 2
+        } else {
+            creixer.estatDesenvolupament++;
+        }
+
+    }
 
 }

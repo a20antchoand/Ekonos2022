@@ -57,4 +57,24 @@ public class Jugador {
     public void setMa(List<Carta> ma) {
         this.ma = ma;
     }
+
+
+    /*
+     * MOSTRAR MA JUGADOR
+     *
+     */
+
+    public void mostrarMa() {
+
+        System.out.println("\nCartes de: " + this.getId());
+
+        for (int i = 1; i <= this.getMa().size()-1; i++) {
+
+            System.out.println(this.getMa().get(i).toString());
+
+        }
+
+    }
+
+
 }

@@ -65,7 +65,9 @@ public class TaulellAfilials {
         this.caselles = caselles;
     }
 
-
+    public boolean comprovarCasella(int numCasella) {
+        return caselles[numCasella].ocupada;
+    }
 
     /*
      * TO STRING
@@ -76,17 +78,30 @@ public class TaulellAfilials {
     public String toString() {
 
         StringBuilder resultat = new StringBuilder();
+        String nom;
         resultat.append("\n");
 
-        resultat.append("\n---------------------------------------------------------------------------\n");
+        resultat.append("\n-------------------------------------------------------------------------------------------------------\n");
 
         for (int i = 1; i < caselles.length; i++) {
 
+            if (caselles[i].propietariFIlial == null) {
+                nom = "Sense propietari";
+            } else {
+                nom = caselles[i].propietariFIlial.nomEmpresa;
+            }
+
             if (i < 10) {
-                resultat.append("|  Casella: " + caselles[i].getNumeroCasella() + "   |  Ocupada: " +  caselles[i].isOcupada() + "  |  Caselles veinas: ");
+                resultat.append("|  Casella: " + caselles[i].getNumeroCasella() +
+                            "   |  Ocupada: " +  caselles[i].isOcupada() +
+                            "  |  Empresa: " +  nom +
+                            " | Caselles veinas: ");
 
             } else {
-                resultat.append("|  Casella: " + caselles[i].getNumeroCasella() + "  |  Ocupada: " +  caselles[i].isOcupada() + "  |  Caselles veinas: ");
+                resultat.append("|  Casella: " + caselles[i].getNumeroCasella() +
+                        "  |  Ocupada: " +  caselles[i].isOcupada() +
+                        "  |  Empresa: " +  nom +
+                        " | Caselles veinas: ");
 
             }
 
@@ -98,7 +113,7 @@ public class TaulellAfilials {
                 }
 
             }
-            resultat.append("\n---------------------------------------------------------------------------\n");
+            resultat.append("\n-------------------------------------------------------------------------------------------------------\n");
 
         }
 
