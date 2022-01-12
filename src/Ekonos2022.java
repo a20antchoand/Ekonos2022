@@ -6,7 +6,7 @@ public class Ekonos2022 {
 
     static Scanner s = new Scanner(System.in);
 
-    static Map<Integer, Carta> baralla = new LinkedHashMap<>();
+    static List<Carta> baralla = new ArrayList<>();
     static LinkedList<Jugador> jugadors = new LinkedList<>();
     static TaulellAfilials taulell = new TaulellAfilials();
     static Map<String, Empresa> empreses = new HashMap();
@@ -31,10 +31,12 @@ public class Ekonos2022 {
             baralla = Carta.generarBaralla();
             repartirMa(baralla);
 
-            System.out.println("\n\n RONDA " + i+1 + "\n\n");
+            System.out.println("\n\n RONDA " + (i+1) + "\n\n");
             while (jugadors.getLast().getMa().size() > 0) {
                 for (Jugador actual : jugadors) {
                     actual.mostrarMa();
+
+                    actual.getMa().remove(actual.getMa().size()-1);
                 }
             }
         }
@@ -78,18 +80,19 @@ public class Ekonos2022 {
      *
      */
 
-    public static void repartirMa(Map<Integer, Carta> baralla) {
+    public static void repartirMa(List<Carta> baralla) {
 
         List<Carta> maActual;
+
 
         if (jugadors.size() == 5) {
 
             for (Jugador j : jugadors) {
                 maActual = new ArrayList<>();
-                for (int i = 0; i <= 5; i++) {
+                for (int i = 0; i < 5; i++) {
 
-                    maActual.add(baralla.get(i));
-                    baralla.remove(baralla.get(i));
+                    maActual.add(baralla.get(baralla.size() - 1));
+                    baralla.remove(baralla.size() - 1);
 
                 }
 
@@ -100,10 +103,10 @@ public class Ekonos2022 {
 
             for (Jugador j : jugadors) {
                 maActual = new ArrayList<>();
-                for (int i = 0; i <= 6; i++) {
+                for (int i = 0; i < 6; i++) {
 
-                    maActual.add(baralla.get(i));
-                    baralla.remove(baralla.get(i));
+                    maActual.add(baralla.get(baralla.size() - 1));
+                    baralla.remove(baralla.size() - 1);
 
                 }
 

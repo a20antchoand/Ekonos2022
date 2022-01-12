@@ -68,7 +68,7 @@ public class Jugador {
 
         System.out.println("\nCartes de: " + this.getId());
 
-        for (int i = 1; i <= this.getMa().size()-1; i++) {
+        for (int i = 0; i < this.getMa().size(); i++) {
 
             System.out.println(this.getMa().get(i).toString());
 
