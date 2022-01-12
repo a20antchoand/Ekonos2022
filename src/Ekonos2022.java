@@ -1,3 +1,4 @@
+import javax.management.BadAttributeValueExpException;
 import java.util.*;
 
 public class Ekonos2022 {
@@ -11,23 +12,24 @@ public class Ekonos2022 {
     static TaulellAfilials taulell = new TaulellAfilials();
     static Map<String, Empresa> empreses = new HashMap();
 
-
     public static void main(String[] args) {
 
-        iniciarPartida();
+        Ekonos2022 joc = new Ekonos2022();
 
-        jugar();
+        joc.iniciarPartida();
+
+        joc.jugar();
 
     }
 
-    public static void iniciarPartida() {
+    public void iniciarPartida() {
         empreses = Empresa.afegirEmpreses();
         obtenirJugadors();
     }
 
-    public static void jugar() {
+    public void jugar() {
         for (int i = 0; i < RONDES; i++) {
-
+            int numeroCarta;
             baralla = Carta.generarBaralla();
             repartirMa(baralla);
 
@@ -35,11 +37,30 @@ public class Ekonos2022 {
             while (jugadors.getLast().getMa().size() > 0) {
                 for (Jugador actual : jugadors) {
                     actual.mostrarMa();
+                    do {
+
+                        try {
+                            System.out.print("Indica la carta: ");
+                            numeroCarta = s.nextInt();
+                        } catch (InputMismatchException e) {
+                            System.out.println("Ha de ser un numero.");
+                            numeroCarta = -1;
+                            s.next();
+                        }
+                    } while (!validarCarta(actual, numeroCarta));
 
                     actual.getMa().remove(actual.getMa().size()-1);
                 }
             }
         }
+    }
+
+    private static boolean validarCarta(Jugador actual, int numeroCarta) {
+        if (numeroCarta >= 0 && numeroCarta < actual.getMa().size()) {
+            return true;
+        }
+        System.out.println("Carta no valida.");
+        return false;
     }
 
     /*
