@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
@@ -7,6 +8,7 @@ public class Jugador {
     final int ACCIONS_INICIALS = 18;
 
     /* INTEGER */
+    List<Empresa> presidencia = new ArrayList<>();
     int id;
     int accions;
     int unitatsMonetaries;

@@ -8,7 +8,7 @@ public class Ekonos2022 {
 
     static List<Carta> baralla = new ArrayList<>();
     static LinkedList<Jugador> jugadors = new LinkedList<>();
-    static TaulellAfilials taulell = new TaulellAfilials();
+    static TaulellFilials taulell = new TaulellFilials();
     static Map<String, Empresa> empreses = new HashMap();
     static Jugador actual;
 
@@ -31,7 +31,7 @@ public class Ekonos2022 {
 
         Carta cartaJugar;
         Carta.opcions opcioJugar;
-
+        char veureTaulell = ' ';
 
         for (int i = 0; i < RONDES; i++) {
             int numeroCarta;
@@ -44,9 +44,14 @@ public class Ekonos2022 {
 
                     actual = j;
 
+                    System.out.print("Vols veure el taulell: ");
+                    veureTaulell = s.next().charAt(0);
+                    if (veureTaulell == 's') {
+                        System.out.println(taulell.toString());
+                    }
+
                     demanarCartaOpcio();
 
-                    System.out.println(taulell.toString());
                 }
             }
         }
@@ -162,7 +167,7 @@ public class Ekonos2022 {
 			jugadors = obtenirJugadors();
 
             try {
-                taulell = new TaulellAfilials();
+                taulell = new TaulellFilials();
             } catch (IllegalArgumentException e) {
                 System.out.println("Error al crear el taulell, numero de jugadors incorrectes.\n");
             }
@@ -220,34 +225,24 @@ public class Ekonos2022 {
     public static void crearFilial (Carta.opcions empresa) throws Exception{
 
         int numCasella;
-        char opcio = ' ';
         boolean casellaOcupada = false;
 
-        do {
+
+
             do {
                 System.out.print("Indica el numero de casella: ");
                 numCasella = s.nextInt();
 
                 if (numCasella < 1 || numCasella > 36) {
                     System.out.println("Numero d ecasella invalid.");
+                } else {
+                    casellaOcupada = taulell.comprovarCasella(numCasella);
                 }
-            } while (numCasella < 1 || numCasella > 36);
 
-            try {
-                casellaOcupada = taulell.comprovarCasella(numCasella);
-            } catch (IllegalArgumentException e) {
-                System.out.println("Vols cambiar d'opcio? (s/n): ");
-                opcio = s.next().charAt(0);
 
-                if (opcio == 's') {
-                    demanarCartaOpcio();
-                    break;
-                }   
-            }
+            } while (casellaOcupada || (numCasella < 1 || numCasella > 36));
 
-            
 
-        } while (casellaOcupada || (numCasella < 1 || numCasella > 36) || opcio == 's');
 
         taulell.caselles[numCasella].propietariFIlial = empreses.get(empresa.toString());
         taulell.caselles[numCasella].ocupada = true;
@@ -263,17 +258,24 @@ public class Ekonos2022 {
      * */
 
     public static void desenvolupaEmpresa (Carta.opcions empresa) {
+
         Empresa companyia = empreses.get(empresa.toString());
+        char opcio = ' ';
+
+        companyia.estatDesenvolupament++;
 
         if (companyia.estatDesenvolupament == 4) {
-            companyia.estatDesenvolupament++;
-            //casella especial 1
+            System.out.println("Vols utilitzar la acció especial?");
+            opcio = s.next().charAt(0);
+            if (opcio == 's') {
+                System.out.println("Futura accio especial.");
+                companyia.estatDesenvolupament = 0;
+            }
         } else if (companyia.estatDesenvolupament == 6) {
-            companyia.estatDesenvolupament++;
-            //casella especial 2
-        } else {
-            companyia.estatDesenvolupament++;
+            System.out.println("Futura accio especial.");
+            companyia.estatDesenvolupament = 0;
         }
+
         System.out.println("Estat de " + companyia.nomEmpresa + ": " + companyia.estatDesenvolupament);
     }
 

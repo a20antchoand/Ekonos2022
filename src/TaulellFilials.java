@@ -1,14 +1,11 @@
-import java.util.ArrayList;
-import java.util.List;
+public class TaulellFilials {
 
-public class TaulellAfilials {
+    Filials[] caselles = new Filials[37];
 
-    CasellaFilials[] caselles = new CasellaFilials[37];
-
-    public TaulellAfilials() {
+    public TaulellFilials() {
 
         for (int i = 1; i < caselles.length; i++) {
-            caselles[i] = new CasellaFilials(i);
+            caselles[i] = new Filials(i);
         }
 
         indicarVeins();
@@ -57,11 +54,11 @@ public class TaulellAfilials {
     }
 
 
-    public CasellaFilials[] getCaselles() {
+    public Filials[] getCaselles() {
         return caselles;
     }
 
-    public void setCaselles(CasellaFilials[] caselles) {
+    public void setCaselles(Filials[] caselles) {
         this.caselles = caselles;
     }
 

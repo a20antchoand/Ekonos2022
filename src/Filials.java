@@ -1,14 +1,14 @@
 import java.util.ArrayList;
 import java.util.List;
 
-public class CasellaFilials {
+public class Filials {
 
     int numeroCasella;
     boolean ocupada;
     Empresa propietariFIlial;
-    List<CasellaFilials> veinas = new ArrayList<>();
+    List<Filials> veinas = new ArrayList<>();
 
-    public CasellaFilials(int numeroCasella) {
+    public Filials(int numeroCasella) {
         this.numeroCasella = numeroCasella;
         this.ocupada = false;
         this.propietariFIlial = null;
@@ -30,13 +30,13 @@ public class CasellaFilials {
         this.ocupada = ocupada;
     }
 
-    public List<CasellaFilials> getVeinas() {
+    public List<Filials> getVeinas() {
         return veinas;
     }
 
-    public void setVeins(TaulellAfilials taulell, int ...idVeins) {
+    public void setVeins(TaulellFilials taulell, int ...idVeins) {
 
-        CasellaFilials[] caselles = taulell.getCaselles();
+        Filials[] caselles = taulell.getCaselles();
 
         for (int i : idVeins) {
             veinas.add(caselles[i]);
