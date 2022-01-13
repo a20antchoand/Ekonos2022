@@ -1,4 +1,3 @@
-import javax.management.BadAttributeValueExpException;
 import java.util.*;
 
 public class Ekonos2022 {
@@ -11,6 +10,7 @@ public class Ekonos2022 {
     static LinkedList<Jugador> jugadors = new LinkedList<>();
     static TaulellAfilials taulell = new TaulellAfilials();
     static Map<String, Empresa> empreses = new HashMap();
+    static Jugador actual;
 
     public static void main(String[] args) {
 
@@ -28,6 +28,11 @@ public class Ekonos2022 {
     }
 
     public void jugar() {
+
+        Carta cartaJugar;
+        Carta.opcions opcioJugar;
+
+
         for (int i = 0; i < RONDES; i++) {
             int numeroCarta;
             baralla = Carta.generarBaralla();
@@ -35,32 +40,100 @@ public class Ekonos2022 {
 
             System.out.println("\n\n RONDA " + (i+1) + "\n\n");
             while (jugadors.getLast().getMa().size() > 0) {
-                for (Jugador actual : jugadors) {
-                    actual.mostrarMa();
-                    do {
+                for (Jugador j : jugadors) {
 
-                        try {
-                            System.out.print("Indica la carta: ");
-                            numeroCarta = s.nextInt();
-                        } catch (InputMismatchException e) {
-                            System.out.println("Ha de ser un numero.");
-                            numeroCarta = -1;
-                            s.next();
-                        }
-                    } while (!validarCarta(actual, numeroCarta));
+                    actual = j;
 
-                    actual.getMa().remove(actual.getMa().size()-1);
+                    demanarCartaOpcio();
+
+                    System.out.println(taulell.toString());
                 }
             }
         }
     }
 
-    private static boolean validarCarta(Jugador actual, int numeroCarta) {
-        if (numeroCarta >= 0 && numeroCarta < actual.getMa().size()) {
-            return true;
+    public static void demanarCartaOpcio () {
+
+        Carta cartaJugar;
+
+        cartaJugar = agafarCarta();
+        agafarOpcio(cartaJugar);
+
+        actual.getMa().remove(cartaJugar);
+
+    }
+
+    private static Carta agafarCarta () {
+
+        Carta agafar;
+        int numeroCarta;
+
+        actual.mostrarMa();
+
+        do {
+
+            try {
+                System.out.print("Indica la carta: ");
+                numeroCarta = s.nextInt();
+            } catch (InputMismatchException e) {
+                System.out.println("Ha de ser un numero.");
+                numeroCarta = -1;
+                s.next();
+            }
+
+            numeroCarta--;
+
+        } while ((agafar = validarCarta(actual.getMa(), numeroCarta)) == null);
+
+        return agafar;
+
+    }
+
+    private static Carta validarCarta(List<Carta> maActual, int numeroCarta) {
+        if (numeroCarta >= 0 && numeroCarta < maActual.size()) {
+            return maActual.get(numeroCarta);
         }
         System.out.println("Carta no valida.");
-        return false;
+        return null;
+    }
+
+    private static void agafarOpcio (Carta cartaJugar) {
+
+        Carta.opcions agafar;
+        int numeroOpcio;
+
+        System.out.println(cartaJugar.toString());
+
+        do {
+            try {
+                System.out.print("Indica la opcio: ");
+                numeroOpcio = s.nextInt();
+            } catch (InputMismatchException e) {
+                System.out.println("Ha de ser un numero.");
+                numeroOpcio = -1;
+                s.next();
+            }
+
+            numeroOpcio--;
+
+        } while ((agafar = validarOpcio(cartaJugar, numeroOpcio)) == null);
+
+    }
+
+    private static Carta.opcions validarOpcio(Carta cartaJugar, int numeroOpcio) {
+            switch (numeroOpcio) {
+                case 0:
+                    crearFilial(cartaJugar.empresa);
+                    return cartaJugar.empresa;
+                case 1:
+                    desenvolupaEmpresa(cartaJugar.creix1);
+                    return cartaJugar.creix1;
+                case 2:
+                    desenvolupaEmpresa(cartaJugar.creix2);
+                    return cartaJugar.creix2;
+                default:
+                    return null;
+            }
     }
 
     /*
@@ -147,18 +220,46 @@ public class Ekonos2022 {
     public static void crearFilial (Carta.opcions empresa) {
 
         int numCasella;
+        char opcio = ' ';
+        boolean casellaOcupada;
 
         do {
+
             System.out.print("Indica el numero de casella: ");
             numCasella = s.nextInt();
-        } while (numCasella < 1 && numCasella > 36);
 
-        if (taulell.comprovarCasella(numCasella)) {
-            System.out.println("Casella ocupada");
-        } else {
-            taulell.caselles[numCasella].propietariFIlial = empreses.get(empresa.toString());
-            taulell.caselles[numCasella].ocupada = true;
-        }
+            if (numCasella < 1 || numCasella > 36 || opcio == 's') {
+                System.out.println("Numero d ecasella invalid.");
+
+                System.out.println("Vols cambiar d'opcio? (s/n): ");
+                opcio = s.next().charAt(0);
+
+                if (opcio == 's') {
+                    demanarCartaOpcio();
+                    break;
+                }
+
+            }
+
+            if ((casellaOcupada = taulell.comprovarCasella(numCasella)) == true || opcio == 's') {
+                System.out.println("Casella ocupada.");
+
+                System.out.println("Vols cambiar d'opcio? (s/n): ");
+                opcio = s.next().charAt(0);
+
+                if (opcio == 's') {
+                    demanarCartaOpcio();
+                    break;
+                }
+
+            }
+
+        } while (casellaOcupada || (numCasella < 1 || numCasella > 36) || opcio == 's');
+
+        taulell.caselles[numCasella].propietariFIlial = empreses.get(empresa.toString());
+        taulell.caselles[numCasella].ocupada = true;
+        System.out.println("S'ha creat la filial: " + empresa.toString() + " a la casella: " + numCasella);
+
 
     }
 
@@ -168,19 +269,19 @@ public class Ekonos2022 {
      *
      * */
 
-    public static void creixerEmpresa (Carta.opcions empresa) {
-        Empresa creixer = empreses.get(empresa.toString());
+    public static void desenvolupaEmpresa (Carta.opcions empresa) {
+        Empresa companyia = empreses.get(empresa.toString());
 
-        if (creixer.estatDesenvolupament == 4) {
-            creixer.estatDesenvolupament++;
+        if (companyia.estatDesenvolupament == 4) {
+            companyia.estatDesenvolupament++;
             //casella especial 1
-        } else if (creixer.estatDesenvolupament == 6) {
-            creixer.estatDesenvolupament++;
+        } else if (companyia.estatDesenvolupament == 6) {
+            companyia.estatDesenvolupament++;
             //casella especial 2
         } else {
-            creixer.estatDesenvolupament++;
+            companyia.estatDesenvolupament++;
         }
-
+        System.out.println("Estat de " + companyia.nomEmpresa + ": " + companyia.estatDesenvolupament);
     }
 
 }

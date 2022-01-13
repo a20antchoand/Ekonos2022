@@ -74,8 +74,8 @@ public class Carta {
 
     @Override
     public String toString() {
-        return "Empresa: " + empresa +
-                ", Creix1: " + creix1 +
-                ", Creix2: " + creix2 ;
+        return "  ||  Opcio 1) Empresa: " + empresa +
+                " ||  Opcio 2) Creix1: " + creix1 +
+                " ||  Opcio 3) Creix2: " + creix2 ;
     }
 }

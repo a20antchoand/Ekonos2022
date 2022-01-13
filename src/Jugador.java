@@ -70,7 +70,7 @@ public class Jugador {
 
         for (int i = 0; i < this.getMa().size(); i++) {
 
-            System.out.println( i + ": " + this.getMa().get(i).toString());
+            System.out.println("Carta " + (i+1) + ": " + this.getMa().get(i).toString());
 
         }
 
