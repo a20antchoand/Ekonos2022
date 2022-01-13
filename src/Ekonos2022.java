@@ -12,7 +12,7 @@ public class Ekonos2022 {
     static Map<String, Empresa> empreses = new HashMap();
     static Jugador actual;
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
 
         Ekonos2022 joc = new Ekonos2022();
 
@@ -27,7 +27,7 @@ public class Ekonos2022 {
         obtenirJugadors();
     }
 
-    public void jugar() {
+    public void jugar() throws Exception {
 
         Carta cartaJugar;
         Carta.opcions opcioJugar;
@@ -52,7 +52,7 @@ public class Ekonos2022 {
         }
     }
 
-    public static void demanarCartaOpcio () {
+    public static void demanarCartaOpcio () throws Exception {
 
         Carta cartaJugar;
 
@@ -97,7 +97,7 @@ public class Ekonos2022 {
         return null;
     }
 
-    private static void agafarOpcio (Carta cartaJugar) {
+    private static void agafarOpcio (Carta cartaJugar) throws Exception {
 
         Carta.opcions agafar;
         int numeroOpcio;
@@ -120,7 +120,7 @@ public class Ekonos2022 {
 
     }
 
-    private static Carta.opcions validarOpcio(Carta cartaJugar, int numeroOpcio) {
+    private static Carta.opcions validarOpcio(Carta cartaJugar, int numeroOpcio) throws Exception {
             switch (numeroOpcio) {
                 case 0:
                     crearFilial(cartaJugar.empresa);
@@ -217,42 +217,35 @@ public class Ekonos2022 {
     *
     * */
 
-    public static void crearFilial (Carta.opcions empresa) {
+    public static void crearFilial (Carta.opcions empresa) throws Exception{
 
         int numCasella;
         char opcio = ' ';
-        boolean casellaOcupada;
+        boolean casellaOcupada = false;
 
         do {
+            do {
+                System.out.print("Indica el numero de casella: ");
+                numCasella = s.nextInt();
 
-            System.out.print("Indica el numero de casella: ");
-            numCasella = s.nextInt();
+                if (numCasella < 1 || numCasella > 36) {
+                    System.out.println("Numero d ecasella invalid.");
+                }
+            } while (numCasella < 1 || numCasella > 36);
 
-            if (numCasella < 1 || numCasella > 36 || opcio == 's') {
-                System.out.println("Numero d ecasella invalid.");
-
+            try {
+                casellaOcupada = taulell.comprovarCasella(numCasella);
+            } catch (IllegalArgumentException e) {
                 System.out.println("Vols cambiar d'opcio? (s/n): ");
                 opcio = s.next().charAt(0);
 
                 if (opcio == 's') {
                     demanarCartaOpcio();
                     break;
-                }
-
+                }   
             }
 
-            if ((casellaOcupada = taulell.comprovarCasella(numCasella)) == true || opcio == 's') {
-                System.out.println("Casella ocupada.");
-
-                System.out.println("Vols cambiar d'opcio? (s/n): ");
-                opcio = s.next().charAt(0);
-
-                if (opcio == 's') {
-                    demanarCartaOpcio();
-                    break;
-                }
-
-            }
+            
 
         } while (casellaOcupada || (numCasella < 1 || numCasella > 36) || opcio == 's');
 
