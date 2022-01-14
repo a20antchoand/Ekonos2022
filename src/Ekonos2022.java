@@ -44,6 +44,8 @@ public class Ekonos2022 {
 
                     actual = j;
 
+                    System.out.println(empreses.toString());
+
                     System.out.print("Vols veure el taulell: ");
                     veureTaulell = s.next().charAt(0);
                     if (veureTaulell == 's') {

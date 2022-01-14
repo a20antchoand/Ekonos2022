@@ -78,6 +78,8 @@ public class TaulellFilials {
         String nom;
         resultat.append("\n");
 
+
+
         resultat.append("\n-------------------------------------------------------------------------------------------------------\n");
 
         for (int i = 1; i < caselles.length; i++) {
