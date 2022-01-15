@@ -128,13 +128,13 @@ public class Ekonos2022 {
     private static Carta.opcions validarOpcio(Carta cartaJugar, int numeroOpcio) throws Exception {
             switch (numeroOpcio) {
                 case 0:
-                    crearFilial(cartaJugar.empresa);
+                    crearFilial(cartaJugar.empresa.toString());
                     return cartaJugar.empresa;
                 case 1:
-                    desenvolupaEmpresa(cartaJugar.creix1);
+                    desenvolupaEmpresa(cartaJugar.creix1.toString());
                     return cartaJugar.creix1;
                 case 2:
-                    desenvolupaEmpresa(cartaJugar.creix2);
+                    desenvolupaEmpresa(cartaJugar.creix2.toString());
                     return cartaJugar.creix2;
                 default:
                     return null;
@@ -222,7 +222,7 @@ public class Ekonos2022 {
     *
     * */
 
-    public static void crearFilial (Carta.opcions empresa) throws Exception{
+    public static void crearFilial (String empresa) throws Exception{
 
         int numCasella;
         boolean casellaOcupada = false;
@@ -244,8 +244,8 @@ public class Ekonos2022 {
 
 
 
-        taulell.caselles[numCasella].propietariFIlial = empreses.get(empresa.toString());
-        taulell.caselles[numCasella].ocupada = true;
+        taulell.caselles.get(numCasella).propietariFIlial = empreses.get(empresa.toString());
+        taulell.caselles.get(numCasella).ocupada = true;
         System.out.println("S'ha creat la filial: " + empresa.toString() + " a la casella: " + numCasella);
 
 
@@ -257,7 +257,7 @@ public class Ekonos2022 {
      *
      * */
 
-    public static void desenvolupaEmpresa (Carta.opcions empresa) {
+    public static void desenvolupaEmpresa (String empresa) throws Exception {
 
         Empresa companyia = empreses.get(empresa.toString());
         char opcio = ' ';
@@ -268,15 +268,60 @@ public class Ekonos2022 {
             System.out.println("Vols utilitzar la acció especial?");
             opcio = s.next().charAt(0);
             if (opcio == 's') {
-                System.out.println("Futura accio especial.");
+                accioEspecil(companyia);
                 companyia.estatDesenvolupament = 0;
             }
         } else if (companyia.estatDesenvolupament == 6) {
-            System.out.println("Futura accio especial.");
+            accioEspecil(companyia);
             companyia.estatDesenvolupament = 0;
         }
 
         System.out.println("Estat de " + companyia.nomEmpresa + ": " + companyia.estatDesenvolupament);
     }
+
+    private static void accioEspecil(Empresa companyia) throws Exception {
+
+        int accio = 0;
+        int voltes = 0;
+
+
+            System.out.print("Que vols fer? \n1) Crear filials \n2) Menjar filials \nOpccio: ");
+            accio = s.nextInt();
+
+            if (accio == 1) {
+
+                if (companyia.estatDesenvolupament == 4) {
+                    voltes = 2;
+                } else if (companyia.estatDesenvolupament == 6) {
+                    voltes = 3;
+                }
+
+                for (int i = 0; i < voltes; i++) {
+                    crearFilial(companyia.nomEmpresa);
+                }
+
+            } else if (accio == 2) {
+
+                if (companyia.estatDesenvolupament == 4) {
+                    voltes = 1;
+                } else if (companyia.estatDesenvolupament == 6) {
+                    voltes = 2;
+                }
+
+
+                for (int i = 0; i < voltes; i++) {
+                    //menjarVeina(companyia.nomEmpresa);
+                }
+
+            }
+
+
+    }
+
+//    private static void menjarVeina(Empresa companyia) {
+//
+//
+//
+//    }
 
 }

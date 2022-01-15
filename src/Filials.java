@@ -36,10 +36,10 @@ public class Filials {
 
     public void setVeins(TaulellFilials taulell, int ...idVeins) {
 
-        Filials[] caselles = taulell.getCaselles();
+        List<Filials> caselles = taulell.getCaselles();
 
         for (int i : idVeins) {
-            veinas.add(caselles[i]);
+            veinas.add(caselles.get(i));
         }
 
 

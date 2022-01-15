@@ -11,7 +11,7 @@ public class Empresa {
     int estatDesenvolupament;
 
     public Empresa(String nomEmpresa) {
-        this.president = null;
+        this.president = new Jugador(10);
         this.nomEmpresa = nomEmpresa;
         this.numeroAccions = 0;
         this.estatDesenvolupament = 0;
