@@ -31,4 +31,11 @@ public class Empresa {
         return empreses;
     }
 
+    @Override
+    public String toString() {
+        return  "\n President=" + president +
+                "\n Nom Empresa=" + nomEmpresa  +
+                "\n Numero Accions=" + numeroAccions +
+                "\n Estat Desenvolupament=" + estatDesenvolupament + "\n\n";
+    }
 }
